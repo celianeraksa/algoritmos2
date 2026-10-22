@@ -12,9 +12,10 @@ Data da última atualização: 20/10/2026
 #include <stdlib.h>
 #include <time.h>
 
-#define N 10
+#define N 10	
+#define TAM 1024
 
-int i, j, aux; 
+int j, aux; 
 
 enum opcoes {adicionar=1, embarcar, restantes, heapsort, imprimir, inicheap, heapy, checar, gerar, sair};
 
@@ -84,7 +85,7 @@ void ImprimeMenu(){
 }
 
 //insere 
-void InsereHeap(passageiro* vetor[], int N,  passageiro novo){
+void InsereHeap(passageiro* vetor[], int* N, passageiro novo){
 	int i = N + 1;
 	vetor[i] = novo;
 	while (i > 1)
@@ -93,7 +94,10 @@ void InsereHeap(passageiro* vetor[], int N,  passageiro novo){
 			break;
 		Troca(vetor, i, i/2);
 		i = i/2;
-	}
+	};
+	
+	*N = *N + 1;
+	return;
 }
 
 void Heapfy(passageiro* vetor[], int N){
@@ -110,13 +114,13 @@ void ImprimeHeap(passageiro*, int N) {
 }
 
 // ordena o vetor
-void HeapSort(passageiro*, int N) {
+void HeapSort(passageiro*, int N) {	//imprimir comparações e trocas
 	//insere elementos no Heap
 	Heapfy(vetor, N);
 	//remove os elementos do Heap
 	while (N > 1) {
 	Troca(vetor, 1, N);
-	N = N -1;
+	N = N - 1;
 	SacodeHeap(vetor, N);
 	}
 	return;
@@ -126,7 +130,7 @@ void HeapSort(passageiro*, int N) {
 passageiro RemoveHeap(passageiro*, int *N) {
 	passageiro removido = v[1];
 	Troca(vetor, 1, *N);
-	*N = *N -1;
+	*N = *N - 1;
 	SacodeHeap(vetor, *N);
 	return removido;
 }
@@ -193,7 +197,7 @@ void particao(int vetor[], int esq, int dir, int *pos_pivo) {
     *pos_pivo = j;
 }
 
-void QuickSort(int vetor[], int esq, int dir){
+void QuickSort(int vetor[], int esq, int dir){	//imprimir compaações e trocas
 	int pos_pivo;
 	if (esq < dir){
 		particao(vetor, esq, dir, &pos_pivo);
@@ -202,7 +206,7 @@ void QuickSort(int vetor[], int esq, int dir){
 	}
 }
 
-void InsertSort(int vetor[], int N){
+void InsertSort(int vetor[], int N){	//imprimir comparações e trocas
 	int aux, i, j;
 	for (i =2; i <= N; i++){
 		aux = vetor[i];
@@ -229,6 +233,11 @@ void Embaralhar (int* vetor[], int N){
 	};
 }
 
+void GeraVetor (int* vetor[], int N){
+	for (int i = 1, i <= N, i++)
+		vetor[i] = (rand() % 1024);
+}
+
 int main(){
 
 	srand(time(NULL));
@@ -252,22 +261,42 @@ int main(){
 			for(int i = 1, i < N, i++){
 				scanf("%s", &filaEmbarque[i].nome); //****************************************************
 				filaEmbarque[i].prioridade = livre[i];
-			};//for
-				
+			};//for			
 		}//if
-		
-		else if (op == imprimir)
-			ImprimeHeap(filaEmbarque);
-	
+		else if (op == embarcar){
+			printf("Quantos passageiros você deseja embarcar?");
+			scanf("%d", nEmbarque);
+			embarcar(filaEmbarque, nEmbarque);
+		}
+		else if (op == restantes)
+			imprimir(filaEmbarque, N);	
 		else if (op == heapsort){
-			HeapSort(filaEmbarque);	
-			
-		};//else if
-	
-		ImprimeMenu();
-		
-		embarcar(filaEmbarque);	//percorrer o heap e usar o RemoveHeap(), imprimindo a cada loop qual foi o passageiro embarcado (nome + prioridade)
-
+			HeapSort(filaEmbarque, N);
+			printf("O HeapSort foi realizado!");
+		}
+		else if (op == imprimir)
+			imprimir(filaEmbarque, N);
+		else if (op == inicheap){
+			InicHeap(filaEmbarque);
+			printf("Uma nova fila de embarque foi iniciada!");
+		}
+		else if (op == heapfy){
+			Heapfy(filaEmbarque);
+			printf("O vetor foi ordenado como um heap!");
+		}
+		else if (op == checar){
+			int x = ChecaHeap(filaEmbarque);
+			if (x == 1) printf ("É um heap");
+			else printf ("Não é um heap");
+		}
+		else if (op == gerar){
+			int* rdn[TAM] = GeraVetor(rdn, TAM);
+			printf ("Um vetor com 1024 elementos aleatórios foi gerado");
+			QuickSort(rdn, TAM);	//imprmir em cada função o numero de comparações e trocas
+			InsertSort(rdn, TAM);	//passar os vetores sem ponteiros pra poder reutilizar
+			HeapSort(rdn, TAM);
+		}
+		imprimeMenu();
 	};//while  
 	
 	return 0;
