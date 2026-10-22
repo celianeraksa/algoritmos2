@@ -16,12 +16,13 @@ Data da última atualização: 20/10/2026
 #define TAM 1024
 
 int j, aux; 
+int* nEmbarque = 0; 
 
 enum opcoes {adicionar=1, embarcar, restantes, heapsort, imprimir, inicheap, heapy, checar, gerar, sair}
 
 //struct com nome e prioridade de cada passageiro
 typedef struct {
-	char* nome[50];
+	char nome[50];
 	int prioridade;
 } passageiro;
 
@@ -50,16 +51,16 @@ void Troca (passageiro vetor[], int N) {
 	return;
 }
 
-void SacodeHeap (passageiro vetor[], int N) {
+void SacodeHeap (passageiro* vetor[], int N) {
 	int i = 2;
 	while (i <= N) {
-		if (i < N && v[i].prioridade < v[i+1].prioridade)
+		if (i < N && vetor[i].prioridade < vetor[i+1].prioridade)
 			i++;
-		if (v[i/2].prioridade >= v[i].prioridade)
+		if (vetor[i/2].prioridade >= vetor[i].prioridade)
 			break;
-		Troca(v, i/2, i);
+		Troca(vetor, i/2, i);
 		i = i *2;
-	}
+	};
 	return;
 }
 
@@ -120,7 +121,7 @@ void HeapSort(passageiro*, int N) {	//imprimir comparações e trocas
 }
 
 // remove passageiro
-passageiro RemoveHeap(passageiro*, int *N);
+passageiro RemoveHeap(passageiro* vetor, int *N);
 	passageiro removido = vetor[1];
 	Troca(vetor, 1, *N);
 	*N = *N - 1;
@@ -239,6 +240,16 @@ void GeraVetor (int* vetor[], int N){
 		vetor[i] = (rand() % 1024);
 }
 
+void embarcar (passageiro* vetor[], int* N){
+	passageiro menor = vetor[1];
+	for (int i = 1; i < N; i++){
+		if (vetor[i].prioridade < menor.prioridade)
+			menor = vetor[i];
+	};
+	printf ("%s foi embarcado/a! Sua posição na fila era $d\n", menor.nome, menor.prioridade);
+	RemoveHeap(vetor[i], vetor, N);	//RemoveHeap já arruma o buraco?
+}
+
 int main(){
 
 	srand(time(NULL));
@@ -248,6 +259,9 @@ int main(){
 		livre[i] = i;
 
 	Embaralhar(&livre, N);
+
+	char dados[] = "dados.txt";
+	FILE* arq = fopen(dados, "r");
 
 	struct passageiro filaEmbarque[N];	
 
@@ -260,14 +274,19 @@ int main(){
 	while (op != sair){
 		if (op == adicionar){
 			for(int i = 1, i < N, i++){
-				scanf("%s", &filaEmbarque[i].nome); //****************************************************
+				if (arq == NULL){
+					printf("Ocorreu um erro ao ler os dados!");
+					return 0;
+				};//if
+				while ((fgets(filaEmbarque[i].nome, 50, arq)) != NULL);
 				filaEmbarque[i].prioridade = livre[i];
 			};//for			
 		}//if
 		else if (op == embarcar){
 			printf("Quantos passageiros você deseja embarcar?");
-			scanf("%d", nEmbarque);
-			embarcar(filaEmbarque, nEmbarque);
+			scanf("%d", &nEmbarque);
+			for (aux = 0; aux < nEmbarque; aux++)
+				embarcar(filaEmbarque, nEmbarque);
 		}
 		else if (op == restantes)
 			imprimir(filaEmbarque, N);	
@@ -299,6 +318,7 @@ int main(){
 		}
 		imprimeMenu();
 	};//while  
-	
+
+	fclose(arq);
 	return 0;
 }
