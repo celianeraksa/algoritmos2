@@ -28,12 +28,12 @@ typedef struct {
 
 // inicia o Heap com tamanho 0
 void InicHeap( passageiro* vetor[], int* N){
-	N = 0
+	*N = 0
 	return;
 }
 
 void ChecaHeap(passageiro* vetor[], int N){
-	for(int i = N, i > 1, i--){
+	for(int i = N; i > 1; i--){
 		if (vetor[i] < vetor[i/2])
 			return 1;
 		else
@@ -43,9 +43,9 @@ void ChecaHeap(passageiro* vetor[], int N){
 
 // troca dois valores usando uma variavel aux, vai ser usado na implementacao do Sacodeheap, HeapSort, RemoveHeap, etc
 void Troca (passageiro vetor[], int N) {
-	passageiro aux = v[a];
-	v[a] = v[b];
-	v[b] = v[a];
+	passageiro aux = vetor[a];
+	vetor[a] = vetor[b];
+	vetor[b] = aux;
 	
 	return;
 }
@@ -96,7 +96,7 @@ void InsereHeap(passageiro* vetor[], int* N, passageiro novo){
 
 void Heapfy(passageiro* vetor[], int N){
 	int i;
-	for (i = 1, i < N, i++)
+	for (i = 1; i < N; i++)
 		InsereHeap(vetor, i, vetor[i + 1]);
 	return;
 }
@@ -121,7 +121,7 @@ void HeapSort(passageiro*, int N) {	//imprimir comparações e trocas
 
 // remove passageiro
 passageiro RemoveHeap(passageiro*, int *N);
-	passageiro removido = v[1];
+	passageiro removido = vetor[1];
 	Troca(vetor, 1, *N);
 	*N = *N - 1;
 	SacodeHeap(vetor, *N);
@@ -129,34 +129,30 @@ passageiro RemoveHeap(passageiro*, int *N);
 }
 
 	
-// escolhe o pivo do quicksort usando o metodo mediana de tres
+// devolve a POSICAO da mediana entre vetor[esq], vetor[meio]
 int EscolhePivo(int vetor[], int esq, int dir){
-	
 	int meio = (esq + dir)/2;
+	int a = vetor[esq], b = vetor[meio], c = vetor[dir];
+
+	comparacoes++;
 	
-	if (vetor[esq] < vetor[dir]){ 
-		if (vetor[esq] > vetor[meio]  
-			return vetor[esq];
+	if (a < b){ 
+		comparacoes++;
+		if (b < c)  
+			return meio; //a < b < c
+		comparacoes++;
+		if (a < c)
+			return dir; // a < c <= b
+		return esq; // c <=a < b
 	}
-	else if(vetor[esq] > vetor[dir]){
-		if vetor[esq] < vetor[meio]
-			return vetor[esq];
-	}	
-	else if (vetor[dir] < vetor[esq]){ 
-		if (vetor[dir] > vetor[meio]) 
-			return vetor[dir];
-	}
-	else if (vetor[dir] > vetor[esq]){
-		if (vetor[dir] < vetor[meio])
-			return vetor[dir];
-	}
-	else if (vetor[meio] < vetor[esq]){ 
-		if (vetor[meio] > vetor[dir]) 
-			return vetor[meio];
-	}
-	else if (vetor[meio] > vetor[esq]){
-		if (vetor[meio] < vetor[dir])
-			return vetor[meio];
+	else {
+		comparacoes++;
+		if (a < c) 
+			return esq; // b <= a < c
+		comparacoes++;
+		if (b < c)
+			return dir; // b < c <= a
+		return meio; // c <= b <= a
 	}
 }
 	
@@ -217,7 +213,7 @@ void Embaralhar (int* vetor[], int N){
 }
 
 void GeraVetor (int* vetor[], int N){
-	for (int i = 1, i <= N, i++)
+	for (int i = 1; i <= N; i++)
 		vetor[i] = (rand() % 1024);
 }
 
@@ -226,7 +222,7 @@ int main(){
 	srand(time(NULL));
 		
 	int livre[N];
-	for (i = 1, i <= N, i++)
+	for (i = 1; i <= N; i++)
 		livre[i] = i;
 
 	Embaralhar(&livre, N);
