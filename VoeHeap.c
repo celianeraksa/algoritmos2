@@ -16,7 +16,7 @@ Data da última atualização: 20/10/2026
 
 int i, j, aux; 
 
-enum opcoes {adicionar=1, embarcar, restantes, heapsort, imprimir, inicheap, heapy, checar, gerar, sair}
+enum opcoes {adicionar=1, embarcar, restantes, heapsort, imprimir, inicheap, heapy, checar, gerar, sair};
 
 //struct com nome e prioridade de cada passageiro
 typedef struct {
@@ -27,12 +27,12 @@ typedef struct {
 
 // inicia o Heap com tamanho 0
 void InicHeap( passageiro* vetor[], int* N){
-	n = 0
+	N = 0;
 	return;
 }
 
 void ChecaHeap(passageiro* vetor[], int N){
-	for(int i = N, i > 1, i--){
+	for(int i = N; i > 1; i--){
 		if (vetor[i] < vetor[i/2])
 			return 1;
 		else
@@ -41,10 +41,10 @@ void ChecaHeap(passageiro* vetor[], int N){
 }
 
 // troca dois valores usando uma variavel aux, vai ser usado na implementacao do Sacodeheap, HeapSort, RemoveHeap, etc
-void Troca (passageiro vetor[], int N) {
-	passageiro aux = v[a];
-	v[a] = v[b];
-	v[b] = v[a];
+void Troca (passageiro vetor[], int a, int b) {
+	passageiro aux = vetor[a];
+	vetor[a] = vetor[b];
+	vetor[b] = aux;
 	
 	return;
 }
@@ -52,14 +52,17 @@ void Troca (passageiro vetor[], int N) {
 void SacodeHeap (passageiro vetor[], int N) {
 	int i = 2;
 	while (i <= N) {
-		if (i < N && v[i].prioridade < v[i+1].prioridade)
+		if (i < N)
+			comparacoes++;
+			if (v[i].prioridade < v[i+1].prioridade)
 			i++;
+	}
+		comparacoes++;
 		if (v[i/2].prioridade >= v[i].prioridade)
 			break;
 		Troca(v, i/2, i);
 		i = i *2;
 	}
-	return;
 }
 
 // imprime o menu para o usuario escolher a proxima opcao
@@ -84,23 +87,25 @@ void ImprimeMenu(){
 void InsereHeap(passageiro* vetor[], int N,  passageiro novo){
 	int i = N + 1;
 	vetor[i] = novo;
-	while (i > 1 && vetor[i/2].prioridade < vetor[i].prioridade){
+	while (i > 1)
+		comparacoes++;
+	 	if (vetor[i/2].prioridade >= vetor[i].prioridade)
+			break;
 		Troca(vetor, i, i/2);
 		i = i/2;
-	};
-	return;
+	}
 }
 
 void Heapfy(passageiro* vetor[], int N){
 	int i;
-	for (i = 1, i < N, i++)
+	for (i = 1; i < N; i++)
 		InsereHeap(vetor, i, vetor[i + 1]);
 	return;
 }
 //imprime o vetor com os passageiros
 void ImprimeHeap(passageiro*, int N) {
 	for (int i = 1; i <= N; i++)
-		printf("%s (%d)\n", v[i].nome, v[i].prioridade)
+		printf("%s (%d)\n", v[i].nome, v[i].prioridade);
 	return;
 }
 
@@ -109,15 +114,16 @@ void HeapSort(passageiro*, int N) {
 	//insere elementos no Heap
 	Heapfy(vetor, N);
 	//remove os elementos do Heap
+	while (N > 1) {
 	Troca(vetor, 1, N);
 	N = N -1;
 	SacodeHeap(vetor, N);
-	
+	}
 	return;
 }
 
 // remove passageiro
-passageiro RemoveHeap(passageiro*, int *N);
+passageiro RemoveHeap(passageiro*, int *N) {
 	passageiro removido = v[1];
 	Troca(vetor, 1, *N);
 	*N = *N -1;
@@ -125,58 +131,66 @@ passageiro RemoveHeap(passageiro*, int *N);
 	return removido;
 }
 
-	
-// escolhe o pivo do quicksort usando o metodo mediana de tres
-int EscolhePivo(int vetor[], int esq, int dir){
-	
-	int meio = (esq + dir)/2;
-	
-	if (vetor[esq] < vetor[dir]){ 
-		if (vetor[esq] > vetor[meio]  
-			return vetor[esq];
-	}
-	else if(vetor[esq] > vetor[dir]){
-		if vetor[esq] < vetor[meio]
-			return vetor[esq];
-	}	
-	else if (vetor[dir] < vetor[esq]){ 
-		if (vetor[dir] > vetor[meio]) 
-			return vetor[dir];
-	}
-	else if (vetor[dir] > vetor[esq]){
-		if (vetor[dir] < vetor[meio])
-			return vetor[dir];
-	}
-	else if (vetor[meio] < vetor[esq]){ 
-		if (vetor[meio] > vetor[dir]) 
-			return vetor[meio];
-	}
-	else if (vetor[meio] > vetor[esq]){
-		if (vetor[meio] < vetor[dir])
-			return vetor[meio];
-	}
-}
-	
-// faz as particoes nos (sub)vetores do quicksort
-void particao(int vetor[], int esq, int dir, int *pos_pivo){
+/* devolve a posicao da mediana entre vetor[esq], vetor[meio] e vetor[dir] */
+int EscolhePivo(int vetor[], int esq, int dir) {
+    int meio = (esq + dir) / 2;
+    int a = vetor[esq], b = vetor[meio], c = vetor[dir];
 
-	int i, j, pivo, aux;
-	pivo = EscolhePivo(vetor, esq, dir);
+    comparacoes++;
+    if (a < b) {
+        comparacoes++;
+        if (b < c) return meio;       /* a < b < c */
+        comparacoes++;
+        if (a < c) return dir;        /* a < c <= b */
+        return esq;                   /* c <= a < b */
+    } else {
+        comparacoes++;
+        if (a < c) return esq;        /* b <= a < c */
+        comparacoes++;
+        if (b < c) return dir;        /* b < c <= a */
+        return meio;                  /* c <= b <= a */
+    }
+}	
 
-	i = esq; j = dir;
-	
-	while(i < j){
-		while((vetor[i] <= pivo) && (i < dir)) i++;
-			while (vetor[j] > pivo) j--;
-			if (i < j){
-				aux = vetor[j];
-				vetor[j] = vetor[i];
-				vetor[i] = aux;
-			}
-			vetor[esq] = vetor[j];
-			vetor[j] = pivo;
-			*pos_pivo = j;
-	}
+
+void particao(int vetor[], int esq, int dir, int *pos_pivo) {
+    int i, j, pivo, aux, p;
+
+    p = EscolhePivo(vetor, esq, dir);
+    if (p != esq) {                  /* leva a mediana para esq */
+        aux = vetor[p];
+        vetor[p] = vetor[esq];
+        vetor[esq] = aux;
+        trocas++;
+    }
+    pivo = vetor[esq];
+
+    i = esq; j = dir;
+    while (i < j) {
+        /* i anda para a direita enquanto vetor[i] <= pivo */
+        while (i < dir) {
+            comparacoes++;
+            if (vetor[i] > pivo) break;
+            i++;
+        }
+			if (i < dir)
+				comparacoes++; // a que falhou (vetor[i] > pivo)
+        /* j anda para a esquerda enquanto vetor[j] > pivo */
+        while (vetor[j] > pivo) {
+            comparacoes++;
+            j--;
+        }
+		comparacoes++; // a que falhou (vetor[j] <= pivo)
+        if (i < j) {
+            aux = vetor[j]; vetor[j] = vetor[i]; vetor[i] = aux;
+            trocas++;
+        }
+    }
+    /* agora armazena vetor[esq] que é o pivô na posição j */
+    if (j != esq) trocas++;
+    vetor[esq] = vetor[j];
+    vetor[j] = pivo;
+    *pos_pivo = j;
 }
 
 void QuickSort(int vetor[], int esq, int dir){
@@ -185,26 +199,28 @@ void QuickSort(int vetor[], int esq, int dir){
 		particao(vetor, esq, dir, &pos_pivo);
 		QuickSort(vetor, esq, pos_pivo - 1);
 		QuickSort(vetor, pos_pivo + 1, dir);
-	};
+	}
 }
 
-void InsertSort(int vetor[]){
+void InsertSort(int vetor[], int N){
 	int aux, i, j;
-	
-	for (i =2, i <= N, i++){
+	for (i =2; i <= N; i++){
 		aux = vetor[i];
 		j = i - 1;
-		while (aux < vetor[j]){
+		while (j <= 1) {
+			comparacoes++;
+			if (aux >= vetor[j])
+				break;
 			vetor[j + 1] = vetor[j];
 			j--;
-		};//while
+		}
 		vetor[j + 1] = aux;
-	};//for
+	}
 }
 
 void Embaralhar (int* vetor[], int N){
 	if (N > 1){
-		for (int i = N-1, i > 0, i--){
+		for (int i = N-1; i > 0; i--){
 			int j = rand() % (i + 1);
 			int aux = vetor[i];
 			vetor[i] = vetor[j];
@@ -218,12 +234,12 @@ int main(){
 	srand(time(NULL));
 		
 	int livre[N];
-	for (i = 1, i <= N, i++)
+	for (i = 1; i <= N; i++)
 		livre[i] = i;
 
 	Embaralhar(&livre, N);
 
-	struct passageiro filaEmbarque[N];	
+	passageiro filaEmbarque[N];	
 
 	InicHeap(filaEmbarque);	
 
@@ -248,9 +264,9 @@ int main(){
 			
 		};//else if
 	
-		imprimeMenu();
+		ImprimeMenu();
 		
-		embarcar(filaEmbarque)	//percorrer o heap e usar o RemoveHeap(), imprimindo a cada loop qual foi o passageiro embarcado (nome + prioridade)
+		embarcar(filaEmbarque);	//percorrer o heap e usar o RemoveHeap(), imprimindo a cada loop qual foi o passageiro embarcado (nome + prioridade)
 
 	};//while  
 	
