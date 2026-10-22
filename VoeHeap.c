@@ -159,23 +159,45 @@ int EscolhePivo(int vetor[], int esq, int dir){
 // faz as particoes nos (sub)vetores do quicksort
 void particao(int vetor[], int esq, int dir, int *pos_pivo){
 
-	int i, j, pivo, aux;
-	pivo = EscolhePivo(vetor, esq, dir);
+	int i, j, pivo, aux, p;
+	p = EscolhePivo(vetor, esq, dir);
+	if ( p != esq){ // leva a mediana para esq
+		aux = vetor[p];
+		vetor[p] = vetor[esq];
+		vetpr[esq] = aux;
+		trocas++;
+	}
+	pivo = vetor[esq];
 
 	i = esq; j = dir;
 	
 	while(i < j){
-		while((vetor[i] <= pivo) && (i < dir)) i++;
-			while (vetor[j] > pivo) j--;
-			if (i < j){
-				aux = vetor[j];
-				vetor[j] = vetor[i];
-				vetor[i] = aux;
+		// i anda para a direita enquanto vetor[i] <= pivo
+		while (i < dir && vetor[i] <= pivo) {
+			comparacoes++; // comparacao que deu verdadeiro
+			i++;
+		}
+		if (i < dir)
+			comparacoes++; // a que falhou (vetor[i] > pivo)
+		// j anda para a esquerda enquanto vetor[j] > pivo
+		while (vetor[j] > pivo){
+			comparacoes++; // comparaco que deu verdadeiro
+			j--;
+		}
+		comparacoes++; // a que falhou (vetor[j] <= pivo)
+		if (i < j){
+			aux = vetor[j];
+			vetor[j] = vetor[i];
+			vetor[i] = aux;
+			trocas++;
 			}
-			vetor[esq] = vetor[j];
-			vetor[j] = pivo;
-			*pos_pivo = j;
 	}
+			// armazena o pivo (que esta em vetor[esq]) na poiscao j
+	if (j != esq)
+		trocas++;
+		vetor[esq] = vetor[j];
+		vetor[j] = pivo;
+		*pos_pivo = j;
 }
 
 void QuickSort(int vetor[], int esq, int dir){	//imprimir compaações e trocas
