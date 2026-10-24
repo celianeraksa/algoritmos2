@@ -12,8 +12,10 @@ Data da última atualização: 20/10/2026
 #include <stdlib.h>
 #include <time.h>
 
-#define N 10	
-#define TAM 1024
+#define CAPACIDADE 10 //capacidade do aviao (constante)
+#define TAM_VETOR 1024 // tamanho de vetor de teste para comparacoes
+
+long comparacoes = 0, trocas = 0; // contadores globais
 
 int j, aux; 
 int* nEmbarque = 0; 
@@ -251,74 +253,170 @@ void embarcar (passageiro* vetor[], int* N){
 }
 
 int main(){
+	// o heap do aviao usa as posicoes 1..N (a posicao 0 nao eh usada)
+	// o tamanho eh capacidade + 1 para caber todos os passageiros do aviao
+	passageiro filaEmbarque[CAPACIDADE + 1];
+	/* copia da fila, usada para ordenar (heapsort) ou demonstrar 
+	o heapfy sem estragar o heap 
+	*/
+	passageiro copia[CAPACIDADE + 1];
+	// passageiro auxiliar, guarda o que esta sendo inserido ou removido
+	passageiro p;
+	/* prioridades de 1 ate CAPACIDADE embaralhadas. assim cada
+	passsageiro recebe uma e nao existem prioridades iguais (grupos de prioridade)
+	*/
+	int livre [CAPACIDADE + 1];
+	int N; // quantos passageiros estao no heap AGORA (muda qnd insere/remove)
+	int op; //opcao escolhida pelo usuario no menu
+	int qtd; // quantos passageiros o usuario quer embarcar de uma vez
+	int i; // contador usado nos lacos for
+	FILE *arq; // arquivo com os nomes dos passageiros
 
+	//inicia o gerador de numeros aleatorios
 	srand(time(NULL));
-		
-	int livre[N];
-	for (i = 1; i <= N; i++)
-		livre[i] = i;
+	InicHeap(&N);	// comeca com o heap vazio (N=0)
 
-	Embaralhar(&livre, N);
-
-	char dados[] = "dados.txt";
-	FILE* arq = fopen(dados, "r");
-
-	struct passageiro filaEmbarque[N];	
-
-	InicHeap(filaEmbarque);	
-
-	
-	imprimeMenu();	
-	scanf ("%d", &op);	//op é a escolha do usuario
-	
+	//mostra o menu e le a primeira opcao
+	ImprimeMenu();	
+	scanf("%d", &op);	//op é a escolha do usuario
+	// o laco repete ate o usuario escolher sair
 	while (op != sair){
+		//"adicionar" le os nomes do arquivo e monta o heap
 		if (op == adicionar){
-			for(int i = 1, i < N, i++){
-				if (arq == NULL){
+			arq =  fopen("dados.txt", "r");
+			if (arq == NULL){ // sem o arquivo nao eh possivel ler os nomes
 					printf("Ocorreu um erro ao ler os dados!");
-					return 0;
-				};//if
-				while ((fgets(filaEmbarque[i].nome, 50, arq)) != NULL);
-				filaEmbarque[i].prioridade = livre[i];
-			};//for			
-		}//if
-		else if (op == embarcar){
-			printf("Quantos passageiros você deseja embarcar?");
-			scanf("%d", &nEmbarque);
-			for (aux = 0; aux < nEmbarque; aux++)
-				embarcar(filaEmbarque, nEmbarque);
-		}
-		else if (op == restantes)
-			imprimir(filaEmbarque, N);	
-		else if (op == heapsort){
-			HeapSort(filaEmbarque, N);
-			printf("O HeapSort foi realizado!");
-		}
-		else if (op == imprimir)
-			imprimir(filaEmbarque, N);
-		else if (op == inicheap){
-			InicHeap(filaEmbarque);
-			printf("Uma nova fila de embarque foi iniciada!");
-		}
-		else if (op == heapfy){
-			Heapfy(filaEmbarque);
-			printf("O vetor foi ordenado como um heap!");
-		}
-		else if (op == checar){
-			int x = ChecaHeap(filaEmbarque);
-			if (x == 1) printf ("É um heap");
-			else printf ("Não é um heap");
-		}
-		else if (op == gerar){
-			int* rdn[TAM] = GeraVetor(rdn, TAM);
-			printf ("Um vetor com 1024 elementos aleatórios foi gerado");
-			QuickSort(rdn, TAM);	//imprmir em cada função o numero de comparações e trocas
-			InsertSort(rdn, TAM);	//passar os vetores sem ponteiros pra poder reutilizar
-			HeapSort(rdn, TAM);
-		}
-		imprimeMenu();
-	};//while  
+				}
+			else
+				InicHeap(&N); // recomeca o aviao, heap vazio
+				//preenche livre com 1 ate CAPACIDADE e embaralha
+				for (i = 1; i <= CAPACIDADE; i++)
+					livre[i] = i;
+				Embaralhar (livre, CAPACIDADE);
+			// cada volta le um linha do arquivo (nome) e insere o passageiro
+				for (i = 1; i <= CAPACIDADE; i++) {
+                    if (fgets(p.nome, sizeof(p.nome), arq) == NULL)
+                        break; // acabaram os nomes
+					// troca o "\n" da quebra de linha por "\0"
+                    p.nome[strcspn(p.nome, "\n")] = '\0';
+                    p.prioridade = livre[i];
+					// InsereHeap coloca o passageiro no lugar certo do heap e aumenta o N sozinho
+                    InsereHeap(fila, &N, p); 
+                }
+                fclose(arq);
+                printf("%d passageiros adicionados.\n", N);
+            }
+        }
+		// "embarcar" remove os passageiros de maior prioridade
+        else if (op == embarcar) {
+            if (N == 0) {
+                printf("Ninguem a embarcar.\n");
+            } else {
+                printf("Quantos passageiros embarcar? ");
+                scanf("%d", &qtd);
+				/* nao da para embarcar mais gente do que tem no heap
+				nem uma quantidade negativa*/
+                if (qtd > N) qtd = N;
+				if (qtd < 0) qtd = 0;
+                for (i = 0; i < qtd; i++) {
+					//RemoveHeap tira a raiz (maior prioridade) e aumenta o N sozinho
+                    p = RemoveHeap(fila, &N);          /* o N desce sozinho */
+                    printf("Embarcou: %s (prioridade %d)\n", p.nome, p.prioridade);
+                }
+            }
+        }
+			// "restantes" mostra quem ainda nao embarcou
+        else if (op == restantes) {
+            printf("Restam %d passageiros:\n", N);
+            ImprimeHeap(fila, N);
+        }
+		// "heapsort" ordena uma COPIA e mostra comparacoes e trocas
+        else if (op == heapsort) {
+            if (N == 0) {
+                printf("Heap vazio.\n");
+            } else {
+				/* o heapsort desmancha o heap de prioridades, por isso ordenamos
+				uma copia e a fila do aviao continua valida para os prox embarques */
+                for (i = 1; i <= N; k++) 
+					copia[i] = fila[i];
+                comparacoes = 0; trocas = 0; // zera os contadores antes de ordenar
+                HeapSort(copia, N);
+                printf("Vetor ordenado (crescente):\n");
+                ImprimeHeap(copia, N);
+                printf("HeapSort: %ld comparacoes, %ld trocas\n", comparacoes, trocas);
+            }
+        }
+		// "imprimir" mostra o heap na ordem em que esta no vetor
+        else if (op == imprimir) {
+            ImprimeHeap(fila, N);
+        }
+			// "inicheap" esvazia o aviao
+        else if (op == inicheap) {
+            InicHeap(&N);
+            printf("Uma nova fila de embarque foi iniciada!\n");
+        }
+		/* "heapfy" mostra a construcao de um heap a partir de um vetor desordenado
+		como o aviao ja eh heap, nao serviria */
+        else if (op == heapfy) {
+            /* monta um vetor com prioridades embaralhadas na copia */
+            for (i = 1; i <= CAPACIDADE; i++) 
+				livre[i] = i;
+            Embaralhar(livre, CAPACIDADE);
+            for (i = 1; i <= CAPACIDADE; i++) {
+                sprintf(copia[i].nome, "Passageiro %d", i);
+                copia[i].prioridade = livre[i];
+            }
+            printf("Vetor desordenado:\n");
+            ImprimeHeap(copia, CAPACIDADE);
+            if (ChecaHeap(copia, CAPACIDADE)) printf("E um heap.\n");
+            else printf("NAO e um heap.\n");
 
-	fclose(arq);
+            comparacoes = 0; trocas = 0;
+            Heapfy(copia, CAPACIDADE);
+            printf("Depois do Heapfy:\n");
+            ImprimeHeap(copia, CAPACIDADE);
+            if (ChecaHeap(copia, CAPACIDADE)) printf("E um heap.\n");
+            else printf("NAO e um heap.\n");
+            printf("Heapfy: %ld comparacoes, %ld trocas\n", comparacoes, trocas);
+        }
+			// "checar" confere se a fila do aviao eh um heap valido
+        else if (op == checar) {
+            if (ChecaHeap(fila, N)) printf("E um heap.\n");
+            else printf("NAO e um heap.\n");
+        }
+		// "gerar" compara quicksort, insertsort e heapsort
+        else if (op == gerar) {
+            int base[TAM_VETOR + 1]; // vetor aleatorio original (n eh alterado)
+			int vet[TAM_VETOR + 1]; // copia que cada algoritmo ordena
+            passageiro hs[TAM_VETOR + 1]; // versao em passageiro para o heapsort
+            GeraVetor(base, TAM_VETOR);
+            printf("Vetor com %d elementos aleatorios gerado.\n", TAM);
+			// cada algoritmo recebe uma copia do mesmo vetor com os contadores zerados
+            for (i = 1; i <= TAM_VETOR; i++) 
+				vet[i] = base[i];
+            comparacoes = 0; trocas = 0;
+            QuickSort(vet, 1, TAM_VETOR);
+            printf("QuickSort:  %ld comparacoes, %ld trocas\n", comparacoes, trocas);
+
+            for (i = 1; i <= TAM_VETOR; i++) 
+				vet[i] = base[i];
+            comparacoes = 0; trocas = 0;
+            InsertSort(vet, TAM_VETOR);
+            printf("InsertSort: %ld comparacoes, %ld trocas\n", comparacoes, trocas);
+			/* o heapsort trabalha com passageiros, entao os numeros do vetor
+				sao copiados para o campo prioridade */
+            for (i = 1; i <= TAM_VETOR; i++) 
+				hs[i].prioridade = base[i];
+            comparacoes = 0; trocas = 0;
+            HeapSort(hs, TAM_VETOR);
+            printf("HeapSort:   %ld comparacoes, %ld trocas\n", comparacoes, trocas);
+		}
+		// qualquer outro numero nao existe no menu
+		else 
+			printf("Opcao invalida \n);
+		// mostra o menu de novo e le a proxima opcao
+		imprimeMenu();
+		scanf("%d", &op);
+	}  
 	return 0;
 }
