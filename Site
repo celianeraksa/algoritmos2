@@ -7,9 +7,9 @@
 	<body>
 		<header>
 			<h1> Trabalho prático: VoeHeap <h1>
-			<p> Este projeto foi realizado para a aula de Algoritmo e Estruturas de Dados II, 
-ministrada por Elias Procópio. Ele possui objetivo de colocar em prática o que foi visto sobre "heaps"</p>
-			<p> Data da última atualização: 25/10/2026 </p>
+			<h2> Este projeto foi realizado para a aula de Algoritmo e Estruturas de Dados II, 
+ministrada por Elias Procópio. <br>Ele possui objetivo de colocar em prática o que foi visto sobre "heaps"</h2>
+            </h2> Data da última atualização: 25/10/2026 </h2>
 		</header>
 		<main>
 			<section>
@@ -23,7 +23,7 @@ ministrada por Elias Procópio. Ele possui objetivo de colocar em prática o que
 			<field>
 				<h2> Informações para contato: </h2>
 				<p> Celiane Isabelle J. M. Raksa, GRR 20260578, celianeraksa@ufpr.br </p>
-				<p> Maelly ***************, GRR 2026**********, ***********</p>
+				<p> Maelly Tayna Machado, GRR 20266234, *********@ufpr.br</p>
 			</field>
 		</footer>
 </html>
