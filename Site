@@ -6,12 +6,15 @@
 	</head>
 	<body>
 		<header>
-			<h1> Trabalho prático: VoeHeap <h1>
-			<h2> Este projeto foi realizado para a aula de Algoritmo e Estruturas de Dados II, 
-ministrada por Elias Procópio. <br>Ele possui objetivo de colocar em prática o que foi visto sobre o Tipo Abstrato de Dados "Heap".</h2>
-            </h2> Data da última atualização: 24/10/2026 </h2>
+		<h1 style="text-align: center;"> Trabalho prático: VoeHeap <h1>
+        <h3 style="text-align: center;"> -- Data da última atualização: 27/10/2026 -- </h3>
 		</header>
 		<main>
+			<section>
+				<p> </p>
+				<h3 style="text-align: center;"> Este projeto foi realizado para a aula de Algoritmo e Estruturas de Dados II, 
+ministrada por Elias Procópio. <br>Ele possui objetivo de colocar em prática o que foi visto sobre o Tipo Abstrato de Dados "Heap". </h3>
+			</section>
 			<section>
 				<h2> Acessos: </h2>
 				<p> Para acessar o código do VoeHeap <a href="LINK" target="_blank"> clique aqui </a> </p>
@@ -24,7 +27,9 @@ ministrada por Elias Procópio. <br>Ele possui objetivo de colocar em prática o
 			<field>
 				<h2> Informações para contato: </h2>
 				<p> Celiane Isabelle J. M. Raksa, GRR 20260578, celianeraksa@ufpr.br </p>
-				<p> Maelly Tayna Machado, GRR 20266234, *********@ufpr.br</p>
+				<p> Maelly Tayna Machado, GRR 20266234, maelly.machado@ufpr.br</p>
 			</field>
 		</footer>
 </html>
+
+			
