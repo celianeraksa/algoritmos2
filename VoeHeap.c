@@ -11,6 +11,8 @@ Data da última atualização: 20/10/2026
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdbool.h>
+#include <string.h>
 
 #define CAPACIDADE 10 //capacidade do aviao (constante)
 #define TAM_VETOR 1024 // tamanho de vetor de teste para comparacoes
@@ -20,7 +22,7 @@ long comparacoes = 0, trocas = 0; // contadores globais
 int j, aux; 
 int* nEmbarque = 0; 
 
-enum opcoes {adicionar=1, embarcar, restantes, heapsort, imprimir, inicheap, heapfy, checar, gerar, sair};
+enum opcoes {adicionar=1, embarque, restantes, heapsort, imprimir, inicheap, heapfy, checar, gerar, sair};
 
 //struct com nome e prioridade de cada passageiro
 typedef struct {
@@ -35,7 +37,7 @@ void InicHeap(int* N){
 	return;
 }
 
-void ChecaHeap(passageiro vetor[], int N){
+bool ChecaHeap(passageiro vetor[], int N){
 	for(int i = N; i > 1; i--){
 		if (vetor[i].prioridade < vetor[i/2].prioridade)
 			return 1;
@@ -86,7 +88,7 @@ void ImprimeMenu(){
 
 //insere 
 void InsereHeap(passageiro vetor[], int* N, passageiro novo){
-	int i = N + 1;
+	int i = *N + 1;
 	vetor[i] = novo;
 	while (i > 1 && vetor[i/2].prioridade < vetor[i].prioridade){
 		Troca(vetor, i/2, i);
@@ -98,8 +100,8 @@ void InsereHeap(passageiro vetor[], int* N, passageiro novo){
 }
 
 void Heapfy(passageiro vetor[], int N){
-	int i;
-	for (i = 1; i < N; i++)
+	int* i;
+	for (*i = 1; *i < N; *i++)
 		InsereHeap(vetor, i, vetor[i + 1]);
 	return;
 }
@@ -246,7 +248,7 @@ void GeraVetor (int vetor[], int N){
 void embarcar (passageiro vetor[], int* N){
 	int i;
 	passageiro menor = vetor[1];
-	for (i = 1; i < N; i++){
+	for (i = 1; i < *N; i++){
 		if (vetor[i].prioridade < menor.prioridade)
 			menor = vetor[i];
 	};
@@ -314,7 +316,7 @@ int main(){
             };
 		}
 		// "embarcar" remove os passageiros de maior prioridade
-        else if (op == embarcar){
+        else if (op == embarque){
             if (N == 0){
                 printf("Ninguem a embarcar.\n");
             } 
