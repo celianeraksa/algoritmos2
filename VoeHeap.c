@@ -337,7 +337,7 @@ int main(){
                 if (qtd > N) qtd = N;
 				if (qtd < 0) qtd = 0;
                 for (i = 0; i < qtd; i++){
-                    embarcar(vetor, &N);
+                    embarcar(filaEmbarque, &N);
                 };
             };
         }
