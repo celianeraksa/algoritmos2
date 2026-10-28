@@ -253,15 +253,15 @@ void GeraVetor (int vetor[], int N){
 		vetor[i] = (rand() % 1024);
 }
 
-void embarcar (passageiro vetor[], int* N){
-	int i;
-	passageiro menor = vetor[1];
-	for (i = 1; i < *N; i++){
-		if (vetor[i].prioridade < menor.prioridade)
-			menor = vetor[i];
-	};
-	printf ("%s foi embarcado/a! Sua posição na fila era $d\n", menor.nome, menor.prioridade);
-	RemoveHeap(vetor, N);	
+void embarcar (passageiro vetor[], int *N){
+	//verifica se esta vazio
+	if (*N = 0) {
+		printf("\nNao ha passageiros na fila de embarque!\n");
+		return;
+	}
+	// o removeheap ja tira o de maior prioridade do topo (raiz)
+	passageiro p = RemoveHeap(vetor, N);
+	printf("\nPassageiro embarcado: %s, Prioridade: %d\n", p.nome, p.prioridade)
 }
 
 void PreencheLivre(int vetor[], int N){
@@ -326,20 +326,18 @@ int main(){
 		}
 		// "embarcar" remove os passageiros de maior prioridade
         else if (op == embarque){
-            if (N == 0){
+            if (N <= 0){
                 printf("Ninguem a embarcar.\n");
             } 
 			else{
-                printf("Quantos passageiros embarcar? ");
+                printf("Quantos passageiros embarcar?\n ");
                 scanf("%d", &qtd);
 				/* nao da para embarcar mais gente do que tem no heap
 				nem uma quantidade negativa*/
                 if (qtd > N) qtd = N;
 				if (qtd < 0) qtd = 0;
                 for (i = 0; i < qtd; i++){
-					//RemoveHeap tira a raiz (maior prioridade) e aumenta o N sozinho
-                    p = RemoveHeap(filaEmbarque, &N);          /* o N desce sozinho */
-                    printf("Embarcou: %s (prioridade %d)\n", p.nome, p.prioridade);
+                    embarcar(vetor, &N);
                 };
             };
         }
