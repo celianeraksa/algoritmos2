@@ -5,7 +5,7 @@ Restricoes: o programa assume que nenhum nome de passageiro terá mais de 50 car
   
 Autores: Celiane Raksa (GRR20260578) e Maelly Tayna Machado (GRR20266234)
 Disciplina: Algoritmos e Estrutura de Dados II
-Data da última atualização: 20/10/2026
+Data da última atualização: 28/10/2026
 ------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 #include <stdio.h>
@@ -37,13 +37,12 @@ void InicHeap(int* N){
 	return;
 }
 
-bool ChecaHeap(passageiro vetor[], int N){
+int ChecaHeap(passageiro vetor[], int N){
 	for(int i = N; i > 1; i--){
-		if (vetor[i].prioridade < vetor[i/2].prioridade)
-			return 1;
-		else
+		if (vetor[i].prioridade > vetor[i/2].prioridade)
 			return 0;
-	};
+	}
+	return 1;
 }
 
 // troca dois valores usando uma variavel aux, vai ser usado na implementacao do Sacodeheap, HeapSort, RemoveHeap, etc
@@ -51,7 +50,7 @@ void Troca (passageiro vetor[], int a, int b){
 	passageiro aux = vetor[a];
 	vetor[a] = vetor[b];
 	vetor[b] = aux;
-	
+	trocas++;
 	return;
 }
 
@@ -231,8 +230,8 @@ void InsertSort(int vetor[], int N){	//imprimir comparações e trocas
 
 void Embaralhar (int vetor[], int N){
 	if (N > 1){
-		for (int i = N-1; i > 0; i--){
-			int j = rand() % (i + 1);
+		for (int i = N; i > 1; i--){
+			int j = rand() % (i + 1); // sorteia entre 1 e i
 			int aux = vetor[i];
 			vetor[i] = vetor[j];
 			vetor[j] = aux;
