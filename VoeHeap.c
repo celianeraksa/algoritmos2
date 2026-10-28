@@ -108,9 +108,9 @@ void InsereHeap(passageiro vetor[], int* N, passageiro novo){
 }
 
 void Heapfy(passageiro vetor[], int N){
-	int i;
+	int tamanho = 1;
 	for (i = 1; i < N; i++)
-		InsereHeap(vetor, i, vetor[i + 1]);
+		InsereHeap(vetor, &tamanho, vetor[i + 1]);
 	return;
 }
 //imprime o vetor com os passageiros
@@ -227,7 +227,7 @@ void InsertSort(int vetor[], int N){	//imprimir comparações e trocas
 	for (i = 2; i <= N; i++){
 		aux = vetor[i];
 		j = i - 1;
-		while (j > = 1){
+		while (j >= 1){
 			comparacoes++;
 			if (aux >= vetor[j])
 				break; // ja esta no lugar
