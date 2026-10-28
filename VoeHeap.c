@@ -303,7 +303,7 @@ int main(){
 			arq =  fopen("dados.txt", "r");
 			if (arq == NULL){ // sem o arquivo nao eh possivel ler os nomes
 					printf("Ocorreu um erro ao ler os dados!");
-					return; // sai da funcao sem quebrar o programa
+					return 1; // sai da funcao sem quebrar o programa
 			}
 			else{
 				InicHeap(&N); // recomeca o aviao, heap vazio
