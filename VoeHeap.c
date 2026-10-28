@@ -240,7 +240,7 @@ void InsertSort(int vetor[], int N){	//imprimir comparações e trocas
 void Embaralhar (int vetor[], int N){
 	if (N > 1){
 		for (int i = N; i > 1; i--){
-			int j = rand() % (i + 1); // sorteia entre 1 e i
+			int j = rand() % i + 1; // sorteia entre 1 e i
 			int aux = vetor[i];
 			vetor[i] = vetor[j];
 			vetor[j] = aux;
@@ -255,7 +255,7 @@ void GeraVetor (int vetor[], int N){
 
 void embarcar (passageiro vetor[], int *N){
 	//verifica se esta vazio
-	if (*N = 0) {
+	if (*N == 0) {
 		printf("\nNao ha passageiros na fila de embarque!\n");
 		return;
 	}
