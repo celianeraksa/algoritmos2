@@ -113,13 +113,12 @@ void ImprimeHeap(passageiro vetor[], int N){
 
 // ordena o vetor
 void HeapSort(passageiro vetor[], int N){	//imprimir comparações e trocas
-	//insere elementos no Heap
-	Heapfy(vetor, N);
-	//remove os elementos do Heap
-	Troca(vetor, 1, N);
-	N = N - 1;
-	SacodeHeap(vetor, N);
-	
+	Heapfy(vetor, N); // 1a parte: monta o heap
+	while (N > 1) { // 2a parte: remove o maior varias vezes
+		Troca(vetor, 1, N); // maior vai para a posicao final
+		N = N - 1; // o fim sai do heap
+		SacodeHeap(vetor, N); // conserta a raiz
+	}
 	return;
 }
 
