@@ -79,8 +79,8 @@ void ImprimeMenu(){
 	printf("[4] Fazer o HeapSort\n");
 	printf("[5] Imprimir\n");
 	printf("[6] Iniciar Heap\n");
-	printf("[7] Fazer Heapy\n");
-	printf("[8] Checar se é heap\n");
+	printf("[7] Fazer Heapfy\n");
+	printf("[8] Checar se eh heap\n");
 	printf("[9] Gerar vetor e comparar QuickSort, InsertSort e HeapSort\n"); 
 	printf("[10] Sair\n");
 	printf("****************************************\n");
