@@ -11,6 +11,7 @@ Data da última atualização: 20/10/2026
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 #define CAPACIDADE 10 //capacidade do aviao (constante)
 #define TAM_VETOR 1024 // tamanho de vetor de teste para comparacoes
@@ -34,10 +35,11 @@ void InicHeap( passageiro* vetor[], int* N){
 	*N = 0
 	return;
 }
-
+// devolve 1 se vetor[1..N] eh um heap e 0 caso contrario
+//procura algum filho com prioridade maior que o pai (posicao i/2)
 void ChecaHeap(passageiro* vetor[], int N){
 	for(int i = N; i > 1; i--){
-		if (vetor[i] < vetor[i/2])
+		if (vetor[i].prioridade < vetor[i/2].prioridade)
 			return 1;
 		else
 			return 0;
@@ -49,7 +51,7 @@ void Troca (passageiro vetor[], int N) {
 	passageiro aux = vetor[a];
 	vetor[a] = vetor[b];
 	vetor[b] = aux;
-	
+	trocas++;
 	return;
 }
 
@@ -68,25 +70,25 @@ void SacodeHeap (passageiro* vetor[], int N) {
 
 // imprime o menu para o usuario escolher a proxima opcao
 void ImprimeMenu(){
-	printf("****************************************");
-	printf("[1] Adicionar os passageiros");
-	printf("[2] Embarcar um passageiro");
-	printf("[3] Ver passageiros restantes");
-	printf("[4] Fazer o HeapSort");
-	printf("[5] Imprimir");
-	printf("[6] Iniciar Heap");
-	printf("[7] Fazer Heapy");
-	printf("[8] Checar se é heap");
-	printf("[9] Gerar vetor e comparar QuickSort, InsertSort e HeapSort"); 
-	printf("[10] Sair");
-	printf("****************************************");
+	printf("****************************************\n");
+	printf("[1] Adicionar os passageiros\n");
+	printf("[2] Embarcar um passageiro\n");
+	printf("[3] Ver passageiros restantes\n");
+	printf("[4] Fazer o HeapSort\n");
+	printf("[5] Imprimir\n");
+	printf("[6] Iniciar Heap\n");
+	printf("[7] Fazer Heapfy\n");
+	printf("[8] Checar se é heap\n");
+	printf("[9] Gerar vetor e comparar QuickSort, InsertSort e HeapSort\n"); 
+	printf("[10] Sair\n");
+	printf("****************************************\n");
 	
 	return;
 }
 
 //insere 
 void InsereHeap(passageiro* vetor[], int* N, passageiro novo){
-	int i = N + 1;
+	int i = *N + 1;
 	vetor[i] = novo;
 	while (i > 1 && vetor[i/2].prioridade < vetor[i].prioridade){
 		Troca(vetor, i, i/2);
@@ -116,15 +118,15 @@ void HeapSort(passageiro*, int N) {	//imprimir comparações e trocas
 	Heapfy(vetor, N);
 	//remove os elementos do Heap
 	Troca(vetor, 1, N);
-	N = N - 1;
-	SacodeHeap(vetor, N);
+	N = N - 1; //o fim sai do heap
+	SacodeHeap(vetor, N); // conserta a raiz
 	
 	return;
 }
 
-// remove passageiro
+// remove e devolve a raiz (maior prioridade). Diminui *N
 passageiro RemoveHeap(passageiro* vetor, int *N);
-	passageiro removido = vetor[1];
+	passageiro removido = vetor[1]; // guarda a raiz antes de trocar
 	Troca(vetor, 1, *N);
 	*N = *N - 1;
 	SacodeHeap(vetor, *N);
@@ -167,7 +169,7 @@ void particao(int vetor[], int esq, int dir, int *pos_pivo){
 	if ( p != esq){ // leva a mediana para esq
 		aux = vetor[p];
 		vetor[p] = vetor[esq];
-		vetpr[esq] = aux;
+		vetor[esq] = aux;
 		trocas++;
 	}
 	pivo = vetor[esq];
@@ -195,12 +197,12 @@ void particao(int vetor[], int esq, int dir, int *pos_pivo){
 			trocas++;
 			}
 	}
-			// armazena o pivo (que esta em vetor[esq]) na poiscao j
+	// armazena o pivo (que esta em vetor[esq]) na posicao j
 	if (j != esq)
 		trocas++;
-		vetor[esq] = vetor[j];
-		vetor[j] = pivo;
-		*pos_pivo = j;
+	vetor[esq] = vetor[j];
+	vetor[j] = pivo;
+	*pos_pivo = j;
 }
 
 void QuickSort(int vetor[], int esq, int dir){	//imprimir compaações e trocas
@@ -226,18 +228,16 @@ void InsertSort(int vetor[], int N){	//imprimir comparações e trocas
 	};//for
 }
 
-void Embaralhar (int* vetor[], int N){
-	if (N > 1){
-		for (int i = N-1, i > 0, i--){
-			int j = rand() % (i + 1);
+void Embaralhar (int vetor[], int N){
+		for (int i = N, i > 1, i--){
+			int j = rand() % (i + 1); // sorteia entre 1 e i
 			int aux = vetor[i];
 			vetor[i] = vetor[j];
 			vetor[j] = aux;
-		};
-	};
-}
+		}
+	}
 
-void GeraVetor (int* vetor[], int N){
+void GeraVetor (int vetor[], int N){
 	for (int i = 1; i <= N; i++)
 		vetor[i] = (rand() % 1024);
 }
@@ -287,7 +287,7 @@ int main(){
 			if (arq == NULL){ // sem o arquivo nao eh possivel ler os nomes
 					printf("Ocorreu um erro ao ler os dados!");
 				}
-			else
+			else {
 				InicHeap(&N); // recomeca o aviao, heap vazio
 				//preenche livre com 1 ate CAPACIDADE e embaralha
 				for (i = 1; i <= CAPACIDADE; i++)
@@ -381,7 +381,7 @@ int main(){
         }
 			// "checar" confere se a fila do aviao eh um heap valido
         else if (op == checar) {
-            if (ChecaHeap(fila, N)) printf("E um heap.\n");
+            if (ChecaHeap(filaEmbarque, N)) printf("E um heap.\n");
             else printf("NAO e um heap.\n");
         }
 		// "gerar" compara quicksort, insertsort e heapsort
@@ -390,7 +390,7 @@ int main(){
 			int vet[TAM_VETOR + 1]; // copia que cada algoritmo ordena
             passageiro hs[TAM_VETOR + 1]; // versao em passageiro para o heapsort
             GeraVetor(base, TAM_VETOR);
-            printf("Vetor com %d elementos aleatorios gerado.\n", TAM);
+            printf("Vetor com %d elementos aleatorios gerado.\n", TAM_VETOR);
 			// cada algoritmo recebe uma copia do mesmo vetor com os contadores zerados
             for (i = 1; i <= TAM_VETOR; i++) 
 				vet[i] = base[i];
@@ -413,9 +413,9 @@ int main(){
 		}
 		// qualquer outro numero nao existe no menu
 		else 
-			printf("Opcao invalida \n);
+			printf("Opcao invalida \n");
 		// mostra o menu de novo e le a proxima opcao
-		imprimeMenu();
+		ImprimeMenu();
 		scanf("%d", &op);
 	}  
 	return 0;
