@@ -40,9 +40,9 @@ void InicHeap(int* N){
 int ChecaHeap(passageiro vetor[], int N){
 	for(int i = N; i > 1; i--){
 		if (vetor[i].prioridade > vetor[i/2].prioridade)
-			return 0;
+			return 0; // filho maior que o pai: nao eh heap
 	}
-	return 1;
+	return 1; // nenhuma violacao: eh heap
 }
 
 // troca dois valores usando uma variavel aux, vai ser usado na implementacao do Sacodeheap, HeapSort, RemoveHeap, etc
@@ -55,14 +55,18 @@ void Troca (passageiro vetor[], int a, int b){
 }
 
 void SacodeHeap (passageiro vetor[], int N){
-	int i = 2;
+	int i = 2; // filho esquerdo da raiz
 	while (i <= N){
-		if (i < N && vetor[i].prioridade < vetor[i+1].prioridade)
-			i++;
+		if (i < N) { //existe filho direito?
+			comparacoes++;
+			if (vetor[i].prioridade < vetor[i+1].prioridade)
+			i++; // i passa a ser o maior filho
+		}
+		comparacoes++;
 		if (vetor[i/2].prioridade >= vetor[i].prioridade)
-			break;
-		Troca(vetor, i/2, i);
-		i = i *2;
+			break; // pai >= filho entao ja esta certo
+		Troca(vetor, i/2, i); // pai desce, filho sobe
+		i = i *2; // continua pelo filho esquerdo
 	};
 	return;
 }
@@ -89,18 +93,23 @@ void ImprimeMenu(){
 void InsereHeap(passageiro vetor[], int* N, passageiro novo){
 	int i = *N + 1;
 	vetor[i] = novo;
-	while (i > 1 && vetor[i/2].prioridade < vetor[i].prioridade){
-		Troca(vetor, i/2, i);
-		i = i/2;
-	};
-	
+	while (i > 1) {
+		comparacoes++;
+		if (vetor[i/2].prioridade < vetor[i].prioridade){
+			Troca(vetor, i, i/2); // pai eh menor que o filho, entao sobe
+			i = i/2;
+	}
+	else {
+		break;
+	}
 	*N = *N + 1;
+	}
 	return;
 }
 
 void Heapfy(passageiro vetor[], int N){
-	int* i;
-	for (*i = 1; *i < N; *i++)
+	int i;
+	for (i = 1; i < N; i++)
 		InsereHeap(vetor, i, vetor[i + 1]);
 	return;
 }
@@ -215,16 +224,19 @@ void QuickSort(int vetor[], int esq, int dir){	//imprimir compaações e trocas
 
 void InsertSort(int vetor[], int N){	//imprimir comparações e trocas
 	int aux, i, j;
-	
 	for (i = 2; i <= N; i++){
 		aux = vetor[i];
 		j = i - 1;
-		while (aux < vetor[j]){
-			vetor[j + 1] = vetor[j];
+		while (j > = 1){
+			comparacoes++;
+			if (aux >= vetor[j])
+				break; // ja esta no lugar
+			vetor[j + 1] = vetor[j]; // desloca (conta como troca)
+			trocas++;
 			j--;
-		};//while
+		}
 		vetor[j + 1] = aux;
-	};//for
+	}
 }
 
 void Embaralhar (int vetor[], int N){
