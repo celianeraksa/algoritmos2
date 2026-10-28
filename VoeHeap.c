@@ -97,13 +97,12 @@ void InsereHeap(passageiro vetor[], int* N, passageiro novo){
 		if (vetor[i/2].prioridade < vetor[i].prioridade){
 			Troca(vetor, i, i/2); // pai eh menor que o filho, entao sobe
 			i = i/2;
-	}
-	else {
-		break;
+		}
+		else {
+			break;
+		}
 	}
 	*N = *N + 1;
-	}
-	return;
 }
 
 void Heapfy(passageiro vetor[], int N){
@@ -206,9 +205,9 @@ void particao(int vetor[], int esq, int dir, int *pos_pivo){
 			// armazena o pivo (que esta em vetor[esq]) na poiscao j
 	if (j != esq){
 		trocas++;
-		vetor[esq] = vetor[j];
-		vetor[j] = pivo;
-		*pos_pivo = j;
+	vetor[esq] = vetor[j];
+	vetor[j] = pivo;
+	*pos_pivo = j;
 	};
 }
 
