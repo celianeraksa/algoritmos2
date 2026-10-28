@@ -11,15 +11,14 @@ Data da última atualização: 28/10/2026
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <stdbool.h>
 #include <string.h>
-
-#define CAPACIDADE 10 //capacidade do aviao (constante)
-#define TAM_VETOR 1024 // tamanho de vetor de teste para comparacoes
+// capacidade do aviao (constante)
+#define CAPACIDADE 10 
+// tamanho do vetor de teste para comparacoes entre algoritmos de ordenacao
+#define TAM_VETOR 1024
 
 long comparacoes = 0, trocas = 0; // contadores globais
 
-int j, aux; 
 int* nEmbarque = 0; 
 
 enum opcoes {adicionar=1, embarque, restantes, heapsort, imprimir, inicheap, heapfy, checar, gerar, sair};
