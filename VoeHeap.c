@@ -73,18 +73,18 @@ void SacodeHeap (passageiro vetor[], int N){
 
 // imprime o menu para o usuario escolher a proxima opcao
 void ImprimeMenu(){
-	printf("****************************************");
-	printf("[1] Adicionar os passageiros");
-	printf("[2] Embarcar um passageiro");
-	printf("[3] Ver passageiros restantes");
-	printf("[4] Fazer o HeapSort");
-	printf("[5] Imprimir");
-	printf("[6] Iniciar Heap");
-	printf("[7] Fazer Heapy");
-	printf("[8] Checar se é heap");
-	printf("[9] Gerar vetor e comparar QuickSort, InsertSort e HeapSort"); 
-	printf("[10] Sair");
-	printf("****************************************");
+	printf("****************************************\n");
+	printf("[1] Adicionar os passageiros\n");
+	printf("[2] Embarcar um passageiro\n");
+	printf("[3] Ver passageiros restantes\n");
+	printf("[4] Fazer o HeapSort\n");
+	printf("[5] Imprimir\n");
+	printf("[6] Iniciar Heap\n");
+	printf("[7] Fazer Heapy\n");
+	printf("[8] Checar se é heap\n");
+	printf("[9] Gerar vetor e comparar QuickSort, InsertSort e HeapSort\n"); 
+	printf("[10] Sair\n");
+	printf("****************************************\n");
 	
 	return;
 }
