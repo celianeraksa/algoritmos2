@@ -261,7 +261,7 @@ void embarcar (passageiro vetor[], int *N){
 	}
 	// o removeheap ja tira o de maior prioridade do topo (raiz)
 	passageiro p = RemoveHeap(vetor, N);
-	printf("\nPassageiro embarcado: %s, Prioridade: %d\n", p.nome, p.prioridade)
+	printf("\nPassageiro embarcado: %s, Prioridade: %d\n", p.nome, p.prioridade);
 }
 
 void PreencheLivre(int vetor[], int N){
