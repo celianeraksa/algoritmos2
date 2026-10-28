@@ -109,7 +109,7 @@ void InsereHeap(passageiro vetor[], int* N, passageiro novo){
 
 void Heapfy(passageiro vetor[], int N){
 	int tamanho = 1;
-	for (i = 1; i < N; i++)
+	for (int i = 1; i < N; i++)
 		InsereHeap(vetor, &tamanho, vetor[i + 1]);
 	return;
 }
@@ -434,9 +434,10 @@ int main(){
 		// qualquer outro numero nao existe no menu
 		else{ 
 			printf("Opcao invalida \n ");
+		}
 		// mostra o menu de novo e le a proxima opcao
 		ImprimeMenu();
 		scanf("%d", &op);
-	};//while  
+	} 
 	return 0;
 }
