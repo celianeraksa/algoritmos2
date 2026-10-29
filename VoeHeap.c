@@ -315,7 +315,7 @@ int main(){
 					// cada volta le um linha do arquivo (nome) e insere o passageiro checando a capacidade
 					while (i <= CAPACIDADE && fgets(p.nome, sizeof(p.nome), arq) != NULL) {
 						// troca o "\n" da quebra de linha por "\0"
-                    	p.nome[strcspn(p.nome, "\n")] = '\0';
+                    	p.nome[strcspn(p.nome, "\r\n")] = '\0';
                     	p.prioridade = livre[i];
 						// InsereHeap coloca o passageiro no lugar certo do heap e aumenta o N sozinho
                     	InsereHeap(filaEmbarque, &N, p); 
