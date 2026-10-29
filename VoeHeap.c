@@ -339,7 +339,7 @@ int main(){
             } 
 			else{
 				int qtd;
-                printf("Quantos passageiros embarcar?\n ");
+                printf("Quantos passageiros embarcar?\n");
                 scanf("%d", &qtd);
 				/* nao da para embarcar mais gente do que tem no heap
 				nem uma quantidade negativa*/
@@ -348,6 +348,8 @@ int main(){
 					qtd = N;
 				}
 				if (qtd < 0) qtd = 0;
+				if (qtd > 0) 
+					printf("--- Iniciando embarque de %d passageiro(s)---\n, qtd);
                 for (int j = 0; j < qtd; j++){
                     embarcar(filaEmbarque, &N);
                 };
