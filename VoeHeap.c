@@ -111,6 +111,11 @@ void Heapfy(passageiro vetor[], int N){
 }
 //imprime o vetor com os passageiros
 void ImprimeHeap(passageiro vetor[], int N){
+	if (N <= 0) {
+		printf("O aviao esta vazio! Nao ha passageiros para exibir.\n");
+		return;
+	}
+	printf("--- LISTA DE PASSAGEIROS---\n");
 	for (int i = 1; i <= N; i++)
 		printf("%s (%d)\n", vetor[i].nome, vetor[i].prioridade);
 	return;
