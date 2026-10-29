@@ -300,7 +300,7 @@ int main(){
 		if (op == adicionar){
 			//verifica se ja foram adicionados para evitar bugs
 			if (N >= 10)
-				printf("\nAViso: os passageiros ja foram adicionados!");
+				printf("\nAviso: os passageiros ja foram adicionados!\n");
 			else {
 				arq =  fopen("dados.txt", "r");
 				if (arq == NULL){ // sem o arquivo nao eh possivel ler os nomes
@@ -332,6 +332,7 @@ int main(){
                 printf("Ninguem a embarcar.\n");
             } 
 			else{
+				int qtd;
                 printf("Quantos passageiros embarcar?\n ");
                 scanf("%d", &qtd);
 				/* nao da para embarcar mais gente do que tem no heap
@@ -340,7 +341,7 @@ int main(){
 					printf("Aviso: solicitado embarque de %d, mas so existem %d passageiros. Ajustando...\n", qtd, N);
 					qtd = N;
 				if (qtd < 0) qtd = 0;
-                for (i = 0; i < qtd; i++){
+                for (int j = 0; j < qtd; j++){
                     embarcar(filaEmbarque, &N);
                 };
             };
