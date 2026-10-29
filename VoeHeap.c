@@ -306,7 +306,7 @@ int main(){
 		if (op == adicionar){
 			//verifica se ja foram adicionados para evitar bugs
 			if (N >= 10)
-				printf("\nAviso: os passageiros ja foram adicionados!\n");
+				printf("Aviso: os passageiros ja foram adicionados!\n");
 			else {
 				arq =  fopen("dados.txt", "r");
 				if (arq == NULL){ // sem o arquivo nao eh possivel ler os nomes
