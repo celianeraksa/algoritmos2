@@ -303,22 +303,20 @@ int main(){
 			arq =  fopen("dados.txt", "r");
 			if (arq == NULL){ // sem o arquivo nao eh possivel ler os nomes
 					printf("Ocorreu um erro ao ler os dados!");
-					return 1; // sai da funcao sem quebrar o programa
+					return 1; // termina o programa
 			}
 			else{
 				InicHeap(&N); // recomeca o aviao, heap vazio
 				//preenche livre com 1 ate CAPACIDADE e embaralha
 				PreencheLivre(livre, CAPACIDADE);
-				// cada volta le um linha do arquivo (nome) e insere o passageiro
-				for (i = 1; i <= CAPACIDADE; i++){
-                    if (fgets(p.nome, sizeof(p.nome), arq) == NULL){
-                        break; // acabaram os nomes
-					}	
+				// cada volta le um linha do arquivo (nome) e insere o passageiro checando a capacidade
+				while (i <= CAPACIDADE && fgets(p.nome, sizeof(p.nome), arq) != NULL) {
 					// troca o "\n" da quebra de linha por "\0"
                     p.nome[strcspn(p.nome, "\n")] = '\0';
                     p.prioridade = livre[i];
 					// InsereHeap coloca o passageiro no lugar certo do heap e aumenta o N sozinho
                     InsereHeap(filaEmbarque, &N, p); 
+					i++;
                 };
                 fclose(arq);
                 printf("%d passageiros adicionados.\n", N);
@@ -334,7 +332,9 @@ int main(){
                 scanf("%d", &qtd);
 				/* nao da para embarcar mais gente do que tem no heap
 				nem uma quantidade negativa*/
-                if (qtd > N) qtd = N;
+                if (qtd > N) 
+					printf("Aviso: solicitado embarque de %d, mas so existem %d passageiros. Ajustando...\n", qtd, N);
+					qtd = N;
 				if (qtd < 0) qtd = 0;
                 for (i = 0; i < qtd; i++){
                     embarcar(filaEmbarque, &N);
