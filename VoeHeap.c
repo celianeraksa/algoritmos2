@@ -72,7 +72,7 @@ void SacodeHeap (passageiro vetor[], int N){
 void ImprimeMenu(){
 	printf("****************************************\n");
 	printf("[1] Adicionar os passageiros\n");
-	printf("[2] Embarcar um passageiro\n");
+	printf("[2] Embarcar passageiros\n");
 	printf("[3] Ver passageiros restantes\n");
 	printf("[4] Fazer o HeapSort\n");
 	printf("[5] Imprimir\n");
@@ -291,6 +291,8 @@ int main(){
 	srand(time(NULL));
 	InicHeap(&N);	// comeca com o heap vazio (N=0)
 
+	printf("Antes de tudo, lembre-se de iniciar seu heap ;)\n");
+	
 	//mostra o menu e le a primeira opcao
 	ImprimeMenu();	
 	scanf("%d", &op);	//op é a escolha do usuario
@@ -349,7 +351,7 @@ int main(){
         }
 			// "restantes" mostra quem ainda nao embarcou
         else if (op == restantes){
-            printf("Restam %d passageiros:\n", N);
+            printf("Restam: %d passageiros.\n", N);
             ImprimeHeap(filaEmbarque, N);
         }
 		// "heapsort" ordena uma COPIA e mostra comparacoes e trocas
@@ -372,7 +374,7 @@ int main(){
 		// "imprimir" mostra o heap na ordem em que esta no vetor
         else if (op == imprimir){
 			if (N == 0){
-				printf("Nao ha nada para imprimir aqui...");
+				printf("Nao ha nada para imprimir aqui...\n");
 			}
 			else{
 				ImprimeHeap(filaEmbarque, N);
