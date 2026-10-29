@@ -5,7 +5,7 @@ Restricoes: o programa assume que nenhum nome de passageiro terá mais de 50 car
   
 Autores: Celiane Raksa (GRR20260578) e Maelly Tayna Machado (GRR20266234)
 Disciplina: Algoritmos e Estrutura de Dados II
-Data da última atualização: 28/10/2026
+Data da última atualização: 29/10/2026
 ------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 #include <stdio.h>
