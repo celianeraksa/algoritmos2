@@ -307,6 +307,7 @@ int main(){
 				InicHeap(&N); // recomeca o aviao, heap vazio
 				//preenche livre com 1 ate CAPACIDADE e embaralha
 				PreencheLivre(livre, CAPACIDADE);
+				int i = 1;
 				// cada volta le um linha do arquivo (nome) e insere o passageiro checando a capacidade
 				while (i <= CAPACIDADE && fgets(p.nome, sizeof(p.nome), arq) != NULL) {
 					// troca o "\n" da quebra de linha por "\0"
