@@ -298,28 +298,33 @@ int main(){
 	while (op != sair){
 		//"adicionar" le os nomes do arquivo e monta o heap
 		if (op == adicionar){
-			arq =  fopen("dados.txt", "r");
-			if (arq == NULL){ // sem o arquivo nao eh possivel ler os nomes
+			//verifica se ja foram adicionados para evitar bugs
+			if (N >= 10)
+				printf("\nAViso: os passageiros ja foram adicionados!");
+			else {
+				arq =  fopen("dados.txt", "r");
+				if (arq == NULL){ // sem o arquivo nao eh possivel ler os nomes
 					printf("Ocorreu um erro ao ler os dados!");
-					return 1; // termina o programa
+					return 1; // termina o programa	
+				}
+				else{
+					InicHeap(&N); // recomeca o aviao, heap vazio
+					//preenche livre com 1 ate CAPACIDADE e embaralha
+					PreencheLivre(livre, CAPACIDADE);
+					int i = 1;
+					// cada volta le um linha do arquivo (nome) e insere o passageiro checando a capacidade
+					while (i <= CAPACIDADE && fgets(p.nome, sizeof(p.nome), arq) != NULL) {
+						// troca o "\n" da quebra de linha por "\0"
+                    	p.nome[strcspn(p.nome, "\n")] = '\0';
+                    	p.prioridade = livre[i];
+						// InsereHeap coloca o passageiro no lugar certo do heap e aumenta o N sozinho
+                    	InsereHeap(filaEmbarque, &N, p); 
+						i++;
+                	}
+               		fclose(arq);
+                	printf("%d passageiros adicionados.\n", N);
+            	}
 			}
-			else{
-				InicHeap(&N); // recomeca o aviao, heap vazio
-				//preenche livre com 1 ate CAPACIDADE e embaralha
-				PreencheLivre(livre, CAPACIDADE);
-				int i = 1;
-				// cada volta le um linha do arquivo (nome) e insere o passageiro checando a capacidade
-				while (i <= CAPACIDADE && fgets(p.nome, sizeof(p.nome), arq) != NULL) {
-					// troca o "\n" da quebra de linha por "\0"
-                    p.nome[strcspn(p.nome, "\n")] = '\0';
-                    p.prioridade = livre[i];
-					// InsereHeap coloca o passageiro no lugar certo do heap e aumenta o N sozinho
-                    InsereHeap(filaEmbarque, &N, p); 
-					i++;
-                };
-                fclose(arq);
-                printf("%d passageiros adicionados.\n", N);
-            };
 		}
 		// "embarcar" remove os passageiros de maior prioridade
         else if (op == embarque){
