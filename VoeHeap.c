@@ -19,8 +19,6 @@ Data da última atualização: 28/10/2026
 
 long comparacoes = 0, trocas = 0; // contadores globais
 
-int* nEmbarque = 0; 
-
 enum opcoes {adicionar=1, embarque, restantes, heapsort, imprimir, inicheap, heapfy, checar, gerar, sair};
 
 //struct com nome e prioridade de cada passageiro
@@ -88,7 +86,7 @@ void ImprimeMenu(){
 	return;
 }
 
-//insere 
+//insere novo passageiro no final do vetor e reorganiza o Max-heap
 void InsereHeap(passageiro vetor[], int* N, passageiro novo){
 	int i = *N + 1;
 	vetor[i] = novo;
@@ -118,7 +116,7 @@ void ImprimeHeap(passageiro vetor[], int N){
 	return;
 }
 
-// ordena o vetor
+
 void HeapSort(passageiro vetor[], int N){	//imprimir comparações e trocas
 	Heapfy(vetor, N); // 1a parte: monta o heap
 	while (N > 1) { // 2a parte: remove o maior varias vezes
@@ -129,12 +127,12 @@ void HeapSort(passageiro vetor[], int N){	//imprimir comparações e trocas
 	return;
 }
 
-// remove passageiro
+// remove e retorna o passageiro de maior prioridade
 passageiro RemoveHeap(passageiro vetor[], int *N){
-	passageiro removido = vetor[1];
-	Troca(vetor, 1, *N);
-	*N = *N - 1;
-	SacodeHeap(vetor, *N);
+	passageiro removido = vetor[1]; // guarda o passageiro a ser removido
+	Troca(vetor, 1, *N); // subtitui a raiz pelo ultimo elemento do heap
+	*N = *N - 1; // decrementa o tamanho
+	SacodeHeap(vetor, *N); // reorganiza o heap para que mantenha suas propriedades
 	return removido;
 }
 
