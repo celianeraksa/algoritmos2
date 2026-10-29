@@ -371,7 +371,12 @@ int main(){
         }
 		// "imprimir" mostra o heap na ordem em que esta no vetor
         else if (op == imprimir){
-            ImprimeHeap(filaEmbarque, N);
+			if (N == 0){
+				printf("Nao ha nada para imprimir aqui...");
+			}
+			else{
+				ImprimeHeap(filaEmbarque, N);
+			};
         }
 			// "inicheap" esvazia o aviao
         else if (op == inicheap){
@@ -404,8 +409,8 @@ int main(){
         }
 			// "checar" confere se a fila do aviao eh um heap valido
         else if (op == checar){
-            if (ChecaHeap(filaEmbarque, N)) printf("Eh um heap.\n");
-            else printf("NAO eh um heap.\n");
+            if (ChecaHeap(filaEmbarque, N)) printf("O vetor \"Fila de Embarque\" eh um heap.\n");
+            else printf("O vetor \"FIla de Enbarque\" NAO eh um heap.\n");
         }
 		// "gerar" compara quicksort, insertsort e heapsort
         else if (op == gerar){
