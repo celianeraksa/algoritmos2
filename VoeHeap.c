@@ -349,7 +349,7 @@ int main(){
 				}
 				if (qtd < 0) qtd = 0;
 				if (qtd > 0) 
-					printf("--- Iniciando embarque de %d passageiro(s)---\n", qtd);
+					printf("---Iniciando embarque de %d passageiro(s)---\n", qtd);
                 for (int j = 0; j < qtd; j++){
                     embarcar(filaEmbarque, &N);
                 };
