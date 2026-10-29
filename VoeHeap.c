@@ -117,7 +117,7 @@ void ImprimeHeap(passageiro vetor[], int N){
 	}
 	printf("--- LISTA DE PASSAGEIROS---\n");
 	for (int i = 1; i <= N; i++)
-		printf("%s (%d)\n", vetor[i].nome, vetor[i].prioridade);
+		printf("Nome: %s Posicao: %d Prioridade: %d\n", vetor[i].nome, i, vetor[i].prioridade);
 	return;
 }
 
