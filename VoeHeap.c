@@ -13,7 +13,7 @@ Data da última atualização: 29/10/2026
 #include <time.h>
 #include <string.h>
 // capacidade do aviao (constante)
-#define CAPACIDADE 10 
+#define CAPACIDADE 30 
 // tamanho do vetor de teste para comparacoes entre algoritmos de ordenacao
 #define TAM_VETOR 1024
 
